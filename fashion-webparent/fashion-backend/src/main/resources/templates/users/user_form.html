@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head('User Form - Fashion Admin')"></head>
+
+<body>
+
+<div id="preloader">
+    <div class="inner">
+        <span>Loading </span>
+        <div class="loading">
+        </div>
+    </div>
+</div>
+
+<div id="main-wrapper">
+
+    <div th:replace="fragments :: header"></div>
+
+    <div th:replace="fragments :: right_navbar"></div>
+
+    <div class="content-body">
+        <!-- row -->
+        <div class="container-fluid">
+
+            <div class="row page-titles p-3 mb-2 bg-success text-white" th:if="${message != null}">
+                <ol class="breadcrumb" style="justify-content: center;">
+                    [[${message}]]
+                </ol>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Manage Users | [[${pageTitle}]]</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="basic-form">
+                            <form th:action="@{/users/save}" method="post" style="max-width: 700px; margin: 0 auto"
+                                  th:object="${user}" enctype="multipart/form-data" onsubmit="return checkEmailUnique(this);">
+
+                                <input type="hidden" th:field="*{id}" />
+
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">E-mail:</label>
+                                        <input type="email" class="form-control" th:field="*{email}" required minlength="8" maxlength="128" />
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">First Name:</label>
+                                        <input type="text" class="form-control" th:field="*{firstName}" required minlength="2"
+                                               maxlength="45" />
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Last Name:</label>
+                                        <input type="text" class="form-control" th:field="*{lastName}" required minlength="2"
+                                               maxlength="45" />
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Password:</label>
+                                        <input th:if="${user.id == null}" type="password" class="form-control" th:field="*{password}" required minlength="8" maxlength="20" />
+
+                                        <input th:if="${user.id != null}" type="password" class="form-control" th:field="*{password}" minlength="8" maxlength="20" />
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label">Roles:</label>
+
+                                        <div class="col-12">
+                                            <select class="form-control" th:field="*{roles}" multiple required
+                                                    style="resize: vertical; height: 200px">
+                                                <th:block th:each="role : ${listRoles}">
+                                                    <option th:value="${role.id}">[[${role.name}]] - [[${role.description}]]</option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6"></div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Chosen categories:</label>
+
+                                        <div class="col-sm-8">
+                                            <div id="chosenCategories">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Enabled:</label>
+                                        <input type="checkbox" th:field="*{enabled}" />
+                                    </div>
+
+                                    <div class="mb-3 col-md-6"></div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Photos:</label>
+                                        <input type="hidden" th:field="*{photos}" />
+                                        <input type="file" id="fileImage" name="image" accept="image/png, image/jpeg" class="mb-2" /> <!-- button để nhấn chọn hình -->
+                                        <img id="thumbnail" alt="Photos preview" th:src="@{${user.photosImagePath}}" class="img-fluid" />
+                                    </div>
+
+                                </div>
+
+                                <div class="text-center">
+                                    <input type="submit" value="Save" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#modalDialog"/>
+                                    <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bootstrap-modal">
+    <div th:replace="modal_fragments :: modal_dialog"></div>
+</div>
+
+<div th:replace="fragments :: script"></div>
+
+<script type="text/javascript">
+    MAX_FILE_SIZE = 102400; // 100KB
+    moduleURL = "[[@{/brands}]]";
+
+    $(document).ready(function() {
+        dropdownCategories = $("#roles");//dropdown
+        divChosenCategories = $("#chosenCategories");//div chứa các giá trị được chọn
+
+        dropdownCategories.change(function() {
+            divChosenCategories.empty();//xóa tất cả các giá trị ở div bên dưới
+            showChosenCategories();//dùng for để load lại tất cả các giá trị được chọn trong dropdown
+        });
+
+        showChosenCategories();
+    });
+
+    function showChosenCategories() {
+        dropdownCategories.children("option:selected").each(function() {//lấy ra các thẻ con của thẻ select và chỉ lấy các thẻ đang được chọn(selected) -->trả về tất cả các thẻ đang selected
+            selectedCategory = $(this);
+            catId = selectedCategory.val();//lấy ra id của option
+            catName = selectedCategory.text().replace(/-/g, "");//lấy ra name của option
+
+            divChosenCategories.append("<span class='badge badge-secondary m-1'>" + catName + "</span>");//thêm vào cuối bên trong thẻ div
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    MAX_FILE_SIZE = 102400;
+
+    moduleURL = "[[@{/users}]]";
+
+    function checkEmailUnique(form) {
+        url = "[[@{/users/check_email}]]";
+        userEmail = $("#email").val();//dùng JQuery để lấy ra giá trị của thẻ có id là email
+        userId = $("#id").val();
+
+        csrfValue = $("input[name='_csrf']").val();
+
+        params = { id: userId, email: userEmail, _csrf: csrfValue };//vì đây là method POST nên sẽ truyền data xuống controller bằng body =>tạo đối tượng object params để truyền xuống controller
+
+        $.post(url, params, function (response) {//dùng Ajax JQuery để gọi xuống controller
+            if (response == "OK") {
+                showSuccessModal("Successful Registration");
+                form.submit();//nếu controller trả về "OK" -->ko trùng -->form.submit() sẽ thực hiện action của form -->@PostMapping("/users/save")
+            } else if (response == "Duplicated") {
+                showWarningModal("There is another user having the email " + userEmail);//nếu trùng thì hiện modal báo lỗi
+            } else {
+                showErrorModal("Unknown response from server");//nếu xảy ra lỗi khác thì báo lỗi
+            }
+        }).fail(function () {
+            showErrorModal("Could not connect to the server");//nếu ko gọi xuống được controller thì báo lỗi
+        });
+
+        return false;
+    }
+</script>
+</body>
+</html>

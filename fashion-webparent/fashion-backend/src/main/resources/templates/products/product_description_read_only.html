@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+	<div class="pt-4" style="padding: 0 30px;">
+		<label>Short Description:</label>
+		<div style="height: 200px;" th:utext="${product.shortDescription}" class="form-control" ></div><!-- chỉ đọc -->
+	</div>
+
+	<div class="pt-4" style="padding: 0 30px;">
+		<label>Full Description:</label>
+		<div style="height: 200px;" th:utext="${product.fullDescription}" class="form-control"></div>
+	</div>	
+</div>		
+</body>
+</html>

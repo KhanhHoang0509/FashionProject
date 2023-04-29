@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+
+<!-- Mirrored from dolab.dexignzone.com/xhtml/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 06 Apr 2023 12:33:56 GMT -->
+<head th:replace="fragments :: head('Home - Fashion Admin')"></head>
+
+<body class="body  h-100">
+
+<div class="container h-100">
+    <div class="row h-100 align-items-center justify-contain-center">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body ">
+                    <div class="row m-0">
+                        <div class="col-xl-6 col-md-6 sign text-center">
+                            <div>
+                                <div class="text-center my-5">
+                                    <img th:src="@{/images/fashion_login.jpg}" style="width: 80%;">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-md-6">
+                            <div class="sign-in-your">
+                                <h3>Sign in your account</h3>
+                                <span class="text-white">Welcome back! Login with your data that you entered<br> during registration</span>
+
+                                <form th:action="@{/login}" method="post">
+                                    <div th:if="${param.error}">
+                                        <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                                    </div>
+                                    <div th:if="${param.logout}">
+                                        <p class="text-warning">You have been logged out.</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="mb-1"><strong>Email</strong></label>
+                                        <input type="email" name="email" class="form-control" placeholder="E-mail" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="mb-1"><strong>Password</strong></label>
+                                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                                    </div>
+                                    <div class="row d-flex justify-content-between mt-4 mb-2">
+                                        <div class="mb-3">
+                                            <div class="form-check custom-checkbox ms-1">
+                                                <input type="checkbox" class="form-check-input" name="remember-me" id="basic_checkbox_1">
+                                                <label class="form-check-label" for="basic_checkbox_1">Remember my preference</label>
+                                            </div>
+                                        </div>
+                                    <div class="text-center">
+                                        <button type="submit" value="Login" class="btn btn-primary btn-block">Sign Me In</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required vendors -->
+<script th:src="@{/vendor/global/global.min.js}"></script>
+<script th:src="@{/vendor/jquery-nice-select/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/vendor/jquery-autocomplete/jquery-ui.js}"></script>
+<script th:src="@{/js/custom.min.js}"></script>
+<script th:src="@{/js/dlabnav-init.js}"></script>
+<script th:src="@{/js/demo.js}"></script>
+
+<script th:src="@{/js/common_form.js}"></script>
+
+</body>
+
+<!-- Mirrored from dolab.dexignzone.com/xhtml/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 06 Apr 2023 12:33:58 GMT -->
+</html>

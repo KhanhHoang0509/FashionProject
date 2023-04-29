@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="fragments :: head('Products - Fashion Admin')">
+    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}"/>
+    <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+</head>
+
+
+<body>
+
+<div id="preloader">
+    <div class="inner">
+        <span>Loading </span>
+        <div class="loading">
+        </div>
+    </div>
+</div>
+
+
+<div id="main-wrapper">
+
+    <div th:replace="fragments :: header"></div>
+
+    <div th:replace="fragments :: right_navbar"></div>
+
+    <div class="content-body">
+
+        <div class="container-fluid">
+                <form th:action="@{/order/save}" th:object="${order}" method="post"
+                      onsubmit="return processFormBeforeSubmit();">
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Order Detail</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div id="productList">
+
+                                        <th:block th:each="detail, status : ${order.orderDetails}">
+                                            <div class="border rounded p-4 row" th:with="product = ${detail.product}"
+                                                 th:id="'row' + ${status.count}">
+                                                <input type="hidden" name="detailId" th:value="${detail.id}"/>
+
+                                                <input type="hidden" name="productId" th:value="${product.id}"
+                                                       class="hiddenProductId"/>
+
+                                                <div class="col-xl-1 bootstrap-badge">
+                                                    <span class="divCount badge light badge-primary badge-lg">[[${status.count}]]</span>
+                                                </div>
+                                                <div class="col-xl-2">
+                                                    <img th:src="@{${product.mainImagePath}}" class="img-fluid"/>
+                                                </div>
+                                                <div class="col-xl-9">
+                                                    <div class="basic-form">
+                                                        <form>
+                                                            <fieldset disabled>
+                                                                <div class="card">
+                                                                    <table class="table table-clear">
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td class="left"><strong>Name: </strong>
+                                                                            </td>
+                                                                            <td class="right">
+                                                                                <b>[[${product.name}]]</b>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td class="left"><strong>Product Cost:</strong>
+                                                                            </td>
+                                                                            <td class="right">
+                                                                                <div th:replace="fragments :: format_currency(${detail.productCost})"/>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td class="left"><strong>Quantity</strong>
+                                                                            </td>
+                                                                            <td class="right bootstrap-badge">
+                                                                                <span class="badge badge-pill badge-secondary">[[${detail.quantity}]]</span>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td class="left"><strong>Unit Price:</strong>
+                                                                            </td>
+                                                                            <td class="right">
+                                                                                <div th:replace="fragments :: format_currency(${detail.unitPrice})"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="left"><strong>Subtotal:</strong>
+                                                                            </td>
+                                                                            <td class="right">
+                                                                                <div th:replace="fragments :: format_currency(${detail.subtotal})"/>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td class="left"><strong>Shipping</strong>
+                                                                            </td>
+                                                                            <td class="right">
+                                                                                <div th:replace="fragments :: format_currency(${detail.shippingCost})"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </fieldset>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div th:id="'blankLine' + ${status.count}" class="row">&nbsp;</div>
+                                        </th:block>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-5">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Payment Method</h4>
+                                                </div>
+                                                <div class="card-body bootstrap-badge">
+                                                    <div class="basic-form " style="text-align: left;">
+                                                        <h3><span class="badge light badge-light">[[${order.paymentMethod}]]</span>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-5 ms-auto">
+                                            <div class="card">
+                                                <table class="table table-clear">
+                                                    <tbody>
+
+                                                    <tr>
+                                                        <td class="left"><strong>Subtotal</strong></td>
+                                                        <td class="right">
+                                                            <div th:replace="fragments :: format_currency(${order.subtotal})"/>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="left"><strong>Shipping</strong></td>
+                                                        <td class="right">
+                                                            <div th:replace="fragments :: format_currency(${order.shippingCost})"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="left"><strong>Total</strong></td>
+                                                        <td class="right"><strong>
+                                                            <div th:replace="fragments :: format_currency(${order.total})"/>
+                                                        </strong></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Customer Detail</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="basic-form">
+                                        <div th:replace="orders/order_form_shipping :: content"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/vendor/global/global.min.js}"></script>
+<script th:src="@{/vendor/jquery-nice-select/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/vendor/jquery-autocomplete/jquery-ui.js}"></script>
+<script th:src="@{/js/custom.min.js}"></script>
+<script th:src="@{/js/dlabnav-init.js}"></script>
+<script th:src="@{/js/demo.js}"></script>
+<script th:src="@{/vendor/ckeditor/ckeditor.js}"></script>
+
+<script th:src="@{/js/common_form.js}"></script>
+<script th:src="@{/js/common_form_country_state.js}"></script>
+<script th:src="@{/js/jquery.number.min.js}"></script>
+<script th:src="@{/js/order_form_overview_products.js}"></script>
+<script th:src="@{/js/order_form_remove_product.js}"></script>
+
+<script type="text/javascript">
+    contextPath = "[[@{/}]]";
+    var csrfHeaderName = "[[${_csrf.headerName}]]";
+    var csrfValue = "[[${_csrf.token}]]";
+
+    $(document).ready(function () {
+        $('#buttonCancel').click(function () {
+            window.location = "[[@{/orders}]]";
+        });
+
+    });
+</script>
+</body>
+
+</html>

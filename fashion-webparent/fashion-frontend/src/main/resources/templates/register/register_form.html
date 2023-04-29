@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--
+    Document Title
+    =============================================
+    -->
+    <title>Titan | Multipurpose HTML5 Template</title>
+    <!--
+    Favicons
+    =============================================
+    -->
+    <link rel="apple-touch-icon" sizes="57x57" th:href="@{/assets/images/favicons/apple-icon-57x57.png}">
+    <link rel="apple-touch-icon" sizes="60x60" th:href="@{/assets/images/favicons/apple-icon-60x60.png}">
+    <link rel="apple-touch-icon" sizes="72x72" th:href="@{/assets/images/favicons/apple-icon-72x72.png}">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/images/favicons/apple-icon-76x76.png}">
+    <link rel="apple-touch-icon" sizes="114x114" th:href="@{/assets/images/favicons/apple-icon-114x114.png}">
+    <link rel="apple-touch-icon" sizes="120x120" th:href="@{/assets/images/favicons/apple-icon-120x120.png}">
+    <link rel="apple-touch-icon" sizes="144x144" th:href="@{/assets/images/favicons/apple-icon-144x144.png}">
+    <link rel="apple-touch-icon" sizes="152x152" th:href="@{/assets/images/favicons/apple-icon-152x152.png}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/images/favicons/apple-icon-180x180.png}">
+    <link rel="icon" type="image/png" sizes="192x192" th:href="@{/assets/images/favicons/android-icon-192x192.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/assets/images/favicons/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="96x96" th:href="@{/assets/images/favicons/favicon-96x96.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/favicons/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/images/favicons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!--
+    Stylesheets
+    =============================================
+
+    -->
+    <!-- Default stylesheets-->
+    <link th:href="@{/assets/lib/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Template specific stylesheets-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Volkhov:400i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link th:href="@{/assets/lib/animate.css/animate.css}" rel="stylesheet">
+    <link th:href="@{/assets/lib/components-font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/lib/et-line-font/et-line-font.css}" rel="stylesheet">
+    <link th:href="@{/assets/lib/flexslider/flexslider.css}" rel="stylesheet">
+    <link th:href="@{/assets/lib/owl.carousel/dist/assets/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/lib/owl.carousel/dist/assets/owl.theme.default.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/lib/magnific-popup/dist/magnific-popup.css}" rel="stylesheet">
+    <link th:href="@{/assets/lib/simple-text-rotator/simpletextrotator.css}" rel="stylesheet">
+    <!-- Main stylesheet and color file-->
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+    <link id="color-scheme" th:href="@{/assets/css/colors/default.css}" rel="stylesheet">
+
+    <style>
+        .main .module {
+            padding: 356px 0;
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+
+<main>
+    <div th:replace="fragments :: headerv2"></div>
+    <section class="module">
+        <div class="container">
+            <div class="row">
+
+                <div>&nbsp;</div>
+
+                <div class="text-center">
+                    <h2>Customer Registration</h2>
+                </div>
+
+                <form th:action="@{/create_customer}" method="post" th:object="${customer}"
+                      style="max-width: 600px; margin: 0 auto" onsubmit="return checkEmailUnique(this);">
+                    <div class="border border-secondary rounded p-3">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">First Name:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" th:field="*{firstName}" class="form-control"
+                                       required="required" maxlength="45" minlength="2"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Last Name:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" th:field="*{lastName}" class="form-control"
+                                       required="required" maxlength="45" minlength="2"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">E-mail:</label>
+
+                            <div class="col-sm-8">
+                                <input type="email" th:field="*{email}" class="form-control"
+                                       required="required" maxlength="45" minlength="8"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Password:</label>
+
+                            <div class="col-sm-8">
+                                <input type="password" th:field="*{password}" class="form-control"
+                                       required="required" maxlength="15" minlength="6"
+                                       oninput="checkPasswordMatch(document.getElementById('confirmPassword'))"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Re-type Password:</label>
+
+                            <div class="col-sm-8">
+                                <input type="password" id="confirmPassword" class="form-control"
+                                       required="required" maxlength="15" minlength="6"
+                                       oninput="checkPasswordMatch(this)"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Phone Number:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" th:field="*{phoneNumber}" class="form-control"
+                                       required="required" maxlength="15" minlength="8"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Address Line 1:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" th:field="*{addressLine1}" class="form-control"
+                                       required="required" maxlength="64" minlength="3"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Address Line 2:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" th:field="*{addressLine2}" class="form-control"
+                                       maxlength="64"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">City:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" th:field="*{city}" class="form-control"
+                                       maxlength="45" minlength="2"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Country:</label>
+
+                            <div class="col-sm-8">
+                                <select class="form-control" th:field="*{country}">
+                                    <th:block th:each="country : ${listCountries}">
+                                        <option th:value="${country.id}">[[${country.name}]]</option>
+                                    </th:block>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">State/Province:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" th:field="*{state}" class="form-control"
+                                       maxlength="45" minlength="3" list="listStates"/>
+                                <datalist id="listStates"></datalist>
+                                <!-- khi bấm vào thẻ input thì nó sẽ hiển thị list states để chọn, khi chọn 1 state trong list states thì giá trị đó sẽ được gán vào nội dung của thẻ input -->
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Postal Code:</label>
+                            <div class="col-sm-8">
+                                <input type="text" th:field="*{postalCode}" class="form-control"
+                                       maxlength="10" minlength="2"/>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <input type="submit" value="Create Account" class="btn btn-primary"/>
+                        </div>
+                    </div>
+                </form>
+
+                <div>&nbsp;</div>
+
+                <div th:replace="fragments :: modal_dialog"></div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<script type="text/javascript" th:src="@{/js/common_modal.js}"></script>
+<!--<script type="text/javascript" th:src="@{/js/common_customer_form.js}"></script>-->
+
+<script type="text/javascript">
+    contextPath = "[[@{/}]]";
+
+    function checkEmailUnique(form) {
+        url = contextPath + "customers/check_unique_email";
+        customerEmail = $("#email").val();
+        csrfValue = $("input[name='_csrf']").val();
+
+        params = {email: customerEmail, _csrf: csrfValue};
+
+        $.post(url, params, function (response) {
+            if (response == "OK") {
+                form.submit();
+            } else if (response == "Duplicated") {
+                showWarningModal("There is another cusotmer having the email " + customerEmail);
+            } else {
+                showErrorModal("Unknown response from server");
+            }
+        }).fail(function () {
+            showErrorModal("Could not connect to the server");
+        });
+
+        return false;
+    }
+</script>
+
+<script>
+    var dropDownCountry;
+    var dataListState;
+    var fieldState;
+
+    $(document).ready(function() {
+        dropDownCountry = $("#country");//dropdown country
+        dataListState = $("#listStates");//list States
+        fieldState = $("#state");//state
+
+        dropDownCountry.on("change", function() {
+            loadStatesForCountry();//khi chọn country thì load toàn bộ states của country đó
+            fieldState.val("").focus();
+        });
+    });
+
+    function loadStatesForCountry() {
+        selectedCountry = $("#country option:selected");//lấy ra country đang được chọn
+        countryId = selectedCountry.val();
+        url = contextPath + "settings/list_states_by_country/" + countryId;
+
+        $.get(url, function(responseJSON) {
+            dataListState.empty();
+
+            $.each(responseJSON, function(index, state) {
+                $("<option>").val(state.name).text(state.name).appendTo(dataListState);
+            });
+
+        }).fail(function() {
+            alert('failed to connect to the server!');
+        });
+    }
+</script>
+
+
+
+<script th:src="@{/assets/lib/jquery/dist/jquery.js}"></script>
+<script th:src="@{/assets/lib/bootstrap/dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/lib/wow/dist/wow.js}"></script>
+<script th:src="@{/assets/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js}"></script>
+<script th:src="@{/assets/lib/isotope/dist/isotope.pkgd.js}"></script>
+<script th:src="@{/assets/lib/imagesloaded/imagesloaded.pkgd.js}"></script>
+<script th:src="@{/assets/lib/flexslider/jquery.flexslider.js}"></script>
+<script th:src="@{/assets/lib/owl.carousel/dist/owl.carousel.min.js}"></script>
+<script th:src="@{/assets/lib/smoothscroll.js}"></script>
+<script th:src="@{/assets/lib/magnific-popup/dist/jquery.magnific-popup.js}"></script>
+<script th:src="@{/assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js}"></script>
+<script th:src="@{/assets/js/plugins.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+</body>
+</html>

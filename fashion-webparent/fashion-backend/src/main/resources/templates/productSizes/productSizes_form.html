@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head('Size Form - Fashion Admin')"></head>
+
+<body>
+
+<div id="preloader">
+    <div class="inner">
+        <span>Loading </span>
+        <div class="loading">
+        </div>
+    </div>
+</div>
+
+<div id="main-wrapper">
+
+    <div th:replace="fragments :: header"></div>
+
+    <div th:replace="fragments :: right_navbar"></div>
+
+    <div class="content-body">
+        <!-- row -->
+        <div class="container-fluid">
+
+            <div class="row page-titles p-3 mb-2 bg-success text-white" th:if="${message != null}">
+                <ol class="breadcrumb" style="justify-content: center;">
+                    [[${message}]]
+                </ol>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Manage Users | [[${pageTitle}]]</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="basic-form">
+                            <form th:action="@{/productSizes/save}" method="post" style="max-width: 500px; margin: 0 auto"
+                                  enctype="multipart/form-data" onsubmit="return checkUnique(this)" th:object="${productSize}">
+
+                                <input type="hidden" th:field="*{id}" />
+
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Size Name:</label>
+                                        <input type="text" class="form-control" th:field="*{name}" required/>
+                                    </div>
+
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Size Category:</label>
+                                        <select class="form-select" th:field="*{parent}">
+                                            <option value="0">[No Parent]</option>
+
+                                            <th:block th:each="cat : ${listProductSizes}">
+                                                <option th:value="${cat.id}">[[${cat.name}]]</option>
+                                            </th:block>
+
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="text-center">
+                                    <input type="submit" value="Save" class="btn btn-primary m-3" />
+                                    <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="modal_fragments :: modal_dialog"></div>
+
+<script th:src="@{/vendor/global/global.min.js}"></script>
+<script th:src="@{/vendor/jquery-nice-select/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/vendor/jquery-autocomplete/jquery-ui.js}"></script>
+<script th:src="@{/js/custom.min.js}"></script>
+<script th:src="@{/js/dlabnav-init.js}"></script>
+<script th:src="@{/js/demo.js}"></script>
+
+<script th:src="@{/js/common_form.js}"></script>
+
+
+<script type="text/javascript">
+    MAX_FILE_SIZE = 102400; // 100KB
+    moduleURL = "[[@{/categories}]]";
+
+    function checkUnique(form) {
+        catId = $("#id").val();
+        catName = $("#name").val();
+        catAlias = $("#alias").val();
+
+        csrfValue = $("input[name='_csrf']").val();
+
+        url = "[[@{/categories/check_unique}]]";
+
+        params = {id: catId, name: catName, alias: catAlias, _csrf: csrfValue};
+
+        $.post(url, params, function(response) {
+            if (response == "OK") {
+                form.submit();
+            } else if (response == "DuplicateName") {
+                showWarningModal("There is another category having same name " + catName);
+            } else if (response == "DuplicateAlias") {
+                showWarningModal("There is another category having same alias " + catAlias);
+            } else {
+                showErrorModal("Unknown response from server");
+            }
+
+        }).fail(function() {
+            showErrorModal("Could not connect to the server");
+        });
+
+        return false;
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en-US" dir="ltr">
+
+<head th:replace="fragments :: headv2"></head>
+
+<body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+<main>
+
+	<div th:replace="fragments :: headerv2"></div>
+
+	<div class="main">
+
+
+		<section class="module">
+			<div class="container">
+				<div class="row">
+					<div th:if="${title != null}">
+						<h2>[[${title}]]</h2>
+					</div>
+
+
+					<div th:if="${message != null}">
+						<h3>[[${message}]]</h3>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div th:replace="fragments :: footerv2"></div>
+	</div>
+	<div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up"></i></a></div>
+</main>
+<!--
+JavaScripts
+=============================================
+-->
+<div th:replace="fragments :: scriptv2"></div>
+</body>
+</html>

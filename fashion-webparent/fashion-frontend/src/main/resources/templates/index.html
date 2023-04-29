@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en-US" dir="ltr">
+
+<head th:replace="fragments :: headv2"></head>
+
+<body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+<main>
+
+    <div th:replace="fragments :: headerv2"></div>
+
+    <section class="home-section bg-dark-30" id="home">
+        <div class="video-player"
+             data-property="{videoURL:'https://www.youtube.com/watch?v=I10XB1-IIbA', containment:'.home-section', startAt:0, mute:false, autoPlay:true, loop:true, opacity:1, showControls:false, showYTLogo:false, vol:20}"></div>
+        <div class="video-controls-box">
+            <div class="container">
+                <div class="video-controls"><a class="fa fa-volume-up" id="video-volume" href="#">&nbsp;</a><a
+                        class="fa fa-pause" id="video-play" href="#">&nbsp;</a></div>
+            </div>
+        </div>
+        <div class="titan-caption">
+            <div class="caption-content">
+                <div class="font-alt mb-30 titan-title-size-1">Hello &amp; welcome</div>
+                <div class="font-alt mb-40 titan-title-size-4">We are Titan</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="main">
+        <section class="module">
+            <div class="container">
+                <div class="row multi-columns-row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="features-item">
+                            <div class="features-icon"><span class="icon-lightbulb"></span></div>
+                            <h3 class="features-title font-alt">Ideas and concepts</h3>Careful attention to detail and
+                            clean, well structured code ensures a smooth user experience for all your visitors.
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="features-item">
+                            <div class="features-icon"><span class="icon-tools"></span></div>
+                            <h3 class="features-title font-alt">Designs &amp; interfaces</h3>Careful attention to detail
+                            and clean, well structured code ensures a smooth user experience for all your visitors.
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="features-item">
+                            <div class="features-icon"><span class="icon-tools-2"></span></div>
+                            <h3 class="features-title font-alt">Coding &amp; development</h3>Careful attention to detail
+                            and clean, well structured code ensures a smooth user experience for all your visitors.
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="features-item">
+                            <div class="features-icon"><span class="icon-lifesaver"></span></div>
+                            <h3 class="features-title font-alt">Dedicated support</h3>Careful attention to detail and
+                            clean, well structured code ensures a smooth user experience for all your visitors.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="module pt-0 pb-0" id="about">
+            <div class="row position-relative m-0">
+                <div class="col-xs-12 col-md-6 side-image" data-background="assets/images/about_us.jpg"></div>
+                <div class="col-xs-12 col-md-6 col-md-offset-6 side-image-text">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h2 class="module-title font-alt align-left">About Us</h2>
+                            <div class="module-subtitle font-serif align-left">A wonderful serenity has taken possession
+                                of my entire soul, like these sweet mornings of spring which I enjoy with my whole
+                                heart.
+                            </div>
+                            <p>The European languages are members of the same family. Their separate existence is a
+                                myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages
+                                only differ in their grammar, their pronunciation and their most common words.</p>
+                            <p>The European languages are members of the same family. Their separate existence is a
+                                myth. For science, music, sport, etc, Europe uses the same vocabulary.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="module">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h2 class="module-title font-alt">Category</h2>
+                    </div>
+                </div>
+
+
+                <ul class="works-grid works-grid-gut works-grid-3 works-hover-w" id="works-grid">
+                    <div th:each="cat : ${listCategories}">
+                        <li class="work-item illustration webdesign">
+                            <a th:href="@{'/c/' + ${cat.alias}}">
+                                <div class="work-image"><img style="height: 464px;" th:src="@{${cat.imagePath}}"/></div>
+                                <div class="work-caption font-alt">
+                                    <h3 class="work-title">[[${cat.name}]]</h3>
+                                    <div class="work-descr">Illustration</div>
+                                </div>
+                            </a></li>
+                    </div>
+                </ul>
+
+            </div>
+        </section>
+
+        <section class="module-small">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h2 class="module-title font-alt">Best Seller</h2>
+                    </div>
+                </div>
+                <div class="row multi-columns-row">
+
+
+                    <div th:each="hot_product : ${listHotProducts}">
+                        <div class="col-sm-6 col-md-3 col-lg-3">
+
+                            <div class="shop-item">
+                                <div class="shop-item-image">
+                                    <img style="height: 330px" th:src="@{${hot_product.mainImagePath}}" alt="Accessories Pack"/>
+                                    <div class="shop-item-detail">
+                                        <a th:href="@{'/p/' + ${hot_product.alias}}" class="btn btn-round btn-b">SEE MORE</a>
+                                    </div>
+                                </div>
+                                <h4 class="shop-item-title font-alt"><a th:href="@{'/p/' + ${hot_product.alias}}">[[${hot_product.name}]]</a></h4>
+                                <div th:replace="fragments :: format_currency(${hot_product.price})"/>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+        <section class="module module-video bg-dark-30 parallax-bg"
+                 data-background="assets/images/pink-background-with-palm-tree.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h2 class="module-title font-alt mb-0">Be inspired. Get ahead of trends.</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <hr class="divider-w">
+        <section class="module-small">
+            <div class="container">
+                <div class="row client">
+                    <div class="owl-carousel text-center" data-items="6" data-pagination="false"
+                         data-navigation="false">
+                        <div class="owl-item">
+                            <div class="col-sm-12">
+                                <div class="client-logo"><img src="assets/images/logo/Adidas.png" alt="Client Logo"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="col-sm-12">
+                                <div class="client-logo"><img src="assets/images/logo/Chanel.png" alt="Client Logo"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="col-sm-12">
+                                <div class="client-logo"><img src="assets/images/logo/Decathlon.png" alt="Client Logo"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="col-sm-12">
+                                <div class="client-logo"><img src="assets/images/logo/Louis_Vuitton.png"
+                                                              alt="Client Logo"/></div>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="col-sm-12">
+                                <div class="client-logo"><img src="assets/images/logo/Nike.png" alt="Client Logo"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="col-sm-12">
+                                <div class="client-logo"><img src="assets/images/logo/Supreme.png" alt="Client Logo"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="col-sm-12">
+                                <div class="client-logo"><img src="assets/images/logo/Zara.png" alt="Client Logo"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div th:replace="fragments :: footerv2"></div>
+    </div>
+    <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up"></i></a></div>
+</main>
+<!--
+JavaScripts
+=============================================
+-->
+<div th:replace="fragments :: scriptv2"></div>
+</body>
+</html>

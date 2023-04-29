@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="content" th:remove="tag">
+
+    <fieldset disabled>
+    <label class="form-label" style="padding-top: 20px;">First Name</label>
+    <input type="text"  class="form-control" th:field="*{firstName}" required>
+
+    <label class="form-label" style="padding-top: 20px;">Last Name</label>
+    <input type="text" class="form-control" th:field="*{lastName}" required>
+
+    <label class="form-label" style="padding-top: 20px;">Phone Number</label>
+    <input type="text" class="form-control" th:field="*{phoneNumber}" required>
+
+    <label class="form-label" style="padding-top: 20px;">Address Line 1</label>
+    <input type="text" class="form-control" th:field="*{addressLine1}" required>
+
+    <label class="form-label" style="padding-top: 20px;">Address Line 2</label>
+    <input type="text" class="form-control" th:field="*{addressLine2}" required>
+
+    <label class="form-label" style="padding-top: 20px;">City</label>
+    <input type="text" class="form-control" th:field="*{city}" required>
+
+    <label class="form-label" style="padding-top: 20px;">Country</label>
+    <input type="text" class="form-control" th:field="*{country}" required>
+
+    <label class="form-label" style="padding-top: 20px;">State</label>
+    <input type="text" class="form-control" th:field="*{state}" required>
+
+
+
+	<label class="form-label" style="padding-top: 20px;">Postal Code:</label>
+	<input type="text" class="form-control" th:field="*{postalCode}" required/>
+    </fieldset>
+    </div>
+</div>
